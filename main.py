@@ -17,7 +17,7 @@ table = [
     [[0 for j in range(20)] for i in range(20)]
 ]
 end = False
-font_big = pygame.font.Font("C:/Windows/Fonts/arial.ttf" , 50)
+font_big = pygame.font.SysFont("sans" , 50)
 
 press_space_to_continue = font_big.render("Press space to continue", True , BLACK)
 Red_win_txt = font_big.render("Red win" , True , RED)
