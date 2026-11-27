@@ -37,20 +37,21 @@ class PlayScreen:
             return "QUIT"
        
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == pygame.BUTTON_LEFT:
+            if event.button == pygame.BUTTON_LEFT: # click chuột trái để chọn tọa độ nước đi tiếp theo
                 [x , y] = event.pos
                 pos[0] = x // NUM_COL_CELL
                 pos[1] = y // NUM_ROW_CELL
-            elif event.button == pygame.BUTTON_RIGHT:
+            elif event.button == pygame.BUTTON_RIGHT: # click chuột phải để hủy chọn tọa độ nước đi tiếp theo
                 pos[0] = -1
                 pos[1] = -1
         
         if pausing == False and event.type == pygame.KEYDOWN:
-            if (event.key == pygame.K_x and player == 0) or (event.key == pygame.K_o and player == 1):
+            if (event.key == pygame.K_x and player == 0) or (event.key == pygame.K_o and player == 1): # người chơi 0 là X , người chơi 1 là O
                 [x , y] = pos
                 if Valid(x , y , mark):
                     mark[player][x][y] = True
                     history[player].append([x , y])
+                    # sau khi đi nước tọa độ điểm đi nước tiếp theo sẽ được hủy
                     pos[0] = -1
                     pos[1] = -1
                     return "XO"
@@ -200,7 +201,7 @@ if __name__ == "__main__":
     history = [[] , []]
     mark = [[[False for j in range(NUM_COL)] for i in range(NUM_ROW)] , 
             [[False for j in range(NUM_COL)] for i in range(NUM_ROW)]]
-    pos = [-1 , -1]
+    pos = [-1 , -1] # tọa độ ô đang được chọn để đánh nước tiếp theo
     
     while running:
         
@@ -210,8 +211,6 @@ if __name__ == "__main__":
             playscreen.GameOver(screen , Winner)    
         else:
             playscreen.Draw(screen , history , pos)
-        
-        print(pos)
         
         for event in pygame.event.get():
             option = playscreen.handle_event(event , history , mark , player , pausing , pos);
