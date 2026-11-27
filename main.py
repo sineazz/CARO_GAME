@@ -32,19 +32,28 @@ class PlayScreen:
         self.Oicon = pygame.image.load("caroO.png").convert_alpha()
         
         
-    def handle_event(self, event , history , mark , player , pausing):
+    def handle_event(self, event , history , mark , player , pausing , pos):
         if event.type == pygame.QUIT:
             return "QUIT"
-        
-        if pausing == False and event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
+       
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == pygame.BUTTON_LEFT:
                 [x , y] = event.pos
-                x = x // NUM_COL_CELL
-                y = y // NUM_ROW_CELL
+                pos[0] = x // NUM_COL_CELL
+                pos[1] = y // NUM_ROW_CELL
+            elif event.button == pygame.BUTTON_RIGHT:
+                pos[0] = -1
+                pos[1] = -1
+        
+        if pausing == False and event.type == pygame.KEYDOWN:
+            if (event.key == pygame.K_x and player == 0) or (event.key == pygame.K_o and player == 1):
+                [x , y] = pos
                 if Valid(x , y , mark):
                     mark[player][x][y] = True
                     history[player].append([x , y])
-                    return "LEFT"
+                    pos[0] = -1
+                    pos[1] = -1
+                    return "XO"
         
         if pausing:
             if event.type == pygame.KEYDOWN:
@@ -62,7 +71,7 @@ class PlayScreen:
     def update(self):
         pass
         
-    def Draw(self , screen , history):
+    def Draw(self , screen , history , pos):
         screen.fill(BACKGROUND) # tô nền màu đen
         
         # Vẽ bảng 
@@ -80,6 +89,9 @@ class PlayScreen:
             
         for [x , y] in history[1]: # tô màu các ô người chơi 1 đã chọn
             screen.blit(self.Oicon ,  (x * NUM_COL_CELL + 1 , y * NUM_ROW_CELL + 1))
+            
+        if Inside(pos[0] , pos[1]):
+            pygame.draw.rect(screen , WHITE , (pos[0] * NUM_COL_CELL + 1 , pos[1] * NUM_ROW_CELL + 1 , 29 , 29))
 
     def Win(self , grid):
         
@@ -188,6 +200,7 @@ if __name__ == "__main__":
     history = [[] , []]
     mark = [[[False for j in range(NUM_COL)] for i in range(NUM_ROW)] , 
             [[False for j in range(NUM_COL)] for i in range(NUM_ROW)]]
+    pos = [-1 , -1]
     
     while running:
         
@@ -196,16 +209,17 @@ if __name__ == "__main__":
             pausing = True
             playscreen.GameOver(screen , Winner)    
         else:
-            playscreen.Draw(screen , history)
+            playscreen.Draw(screen , history , pos)
+        
+        print(pos)
         
         for event in pygame.event.get():
-            option = playscreen.handle_event(event , history , mark , player , pausing);
+            option = playscreen.handle_event(event , history , mark , player , pausing , pos);
             if option == "QUIT":
                 running = False
-            elif option == "LEFT":
+            elif option == "XO":
                 player ^= 1
             elif option == "Space":
-                
                 player = 0
                 pausing = False
     
