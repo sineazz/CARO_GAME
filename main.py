@@ -14,10 +14,10 @@ NUM_COL_CELL = 30 # số lượng cột mỗi ô (pixel)
 
 # Game
 
-player = 0
+player = 0 # lượt của người chơi nào 
 history = [[] , []] # lưu lịch sử tô màu các ô của người chơi 1 và người chơi 2
 mark = [[[0 for j in range(20)] for i in range(20)] ,
-        [[0 for j in range(20)] for i in range(20)]]
+        [[0 for j in range(20)] for i in range(20)]] # bảng đánh dấu các ô người chơi 1 và người chơi 2 đã đi
 
 pygame.init()
 screen = pygame.display.set_mode((601 , 601)) # màng hình 601x601 pixel
@@ -59,9 +59,9 @@ def Draw():
 def Win(grid):
     
     # check 5 ô liên tiếp trên hàng
-    for i in range(20):
+    for i in range(NUM_ROW):
         cur = 0
-        for j in range(20):
+        for j in range(NUM_COL):
             if grid[i][j] == True:
                 cur += 1
             else:
@@ -70,9 +70,9 @@ def Win(grid):
                 return True
         
     # check 5 ô liên tiếp trên cột
-    for j in range(20):
+    for j in range(NUM_COL):
         cur = 0
-        for i in range(20):
+        for i in range(NUM_ROW):
             if grid[i][j] == True:
                 cur += 1
             else:
@@ -84,7 +84,7 @@ def Win(grid):
     
     for s in range(0 , 39):
         cur = 0
-        for i in range(20):
+        for i in range(NUM_ROW):
             j = s - i
             if ins(i , j) and grid[i][j] == True:
                 cur += 1
@@ -97,7 +97,7 @@ def Win(grid):
     
     for s in range(-19 , 20):
         cur = 0
-        for i in range(20):
+        for i in range(NUM_ROW):
             j = i - s
             if ins(i , j) and grid[i][j]:
                 cur += 1
