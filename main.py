@@ -17,7 +17,7 @@ table = [
     [[0 for j in range(20)] for i in range(20)]
 ]
 end = False
-font_big = pygame.font.SysFont("sans" , 50)
+font_big = pygame.font.Font("C:/Windows/Fonts/arial.ttf" , 50)
 
 press_space_to_continue = font_big.render("Press space to continue", True , BLACK)
 Red_win_txt = font_big.render("Red win" , True , RED)
@@ -85,16 +85,14 @@ while running:
         pygame.draw.line(screen , WHITE , (i * 30 , 0) , (i * 30 , 600))
         
     for [x , y] in history[0]:
-        pygame.draw.rect(screen , RED , (x * 30 , y * 30 , 30 , 30))
+        pygame.draw.rect(screen , RED , (x * 30 + 1 , y * 30 + 1 , 29 , 29))
     
     for [x , y] in history[1]:
-            pygame.draw.rect(screen , BLUE , (x * 30 , y * 30 , 30 , 30))
+            pygame.draw.rect(screen , BLUE , (x * 30 + 1 , y * 30 + 1 , 29 , 29))
 
 
     if end:
-        
         pygame.draw.rect(screen , WHITE , (0 , 200 , 601 , 200))
-        
         screen.blit(press_space_to_continue , (50 , 200)) 
         if Blue_win:
             screen.blit(Blue_win_txt , (50 , 300))
