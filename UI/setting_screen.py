@@ -44,7 +44,7 @@ class InputBox:
 # 2. COMPONENT: THANH TRƯỢT ÂM LƯỢNG (SLIDER)
 # =======================================================
 class Slider:
-    def __init__(self, x, y, width, height, initial_val=0.7):
+    def __init__(self, x, y, width, height, initial_val=0.5):
         self.rect = pygame.Rect(x, y, width, height)
         self.value = initial_val
         self.is_dragging = False
@@ -78,10 +78,10 @@ class Slider:
         self.handle_x = max(self.rect.left, min(mouse_x, self.rect.right))
         self.value = (self.handle_x - self.rect.left) / self.rect.width
         # Cập nhật trực tiếp âm lượng Pygame Mixer
-        try:
-            pygame.mixer.music.set_volume(self.value)
-        except Exception:
-            pass
+        # try:
+        #     pygame.mixer.music.set_volume(self.value)
+        # except Exception:
+        #     pass
 
     def draw(self, surface):
         # Vẽ thanh ray nền
@@ -100,7 +100,7 @@ class Slider:
 
         # In số %
         text_surf = self.font.render(f"{int(self.value * 100)}%", True, (50, 50, 50))
-        surface.blit(text_surf, (self.rect.right + 12, self.rect.top - 2))
+        surface.blit(text_surf, (self.rect.right + 12, self.rect.top-8))
 
 
 # =======================================================
@@ -117,7 +117,7 @@ class SettingsScreen:
         self.input_username = InputBox(x=230, y=180, width=220, height=40, initial_text="Player 1")
 
         # 2. Thanh trượt Âm lượng
-        self.volume_slider = Slider(x=230, y=260, width=220, height=12, initial_val=0.7)
+        self.volume_slider = Slider(x=230, y=260, width=220, height=12, initial_val=0.5)
 
         # 3. Chế độ chơi ("PVP" hoặc "PVE")
         self.game_mode = "PVP"
@@ -125,7 +125,9 @@ class SettingsScreen:
         self.rect_pve = pygame.Rect(345, 320, 105, 40)
 
         # 4. Nút TRỞ VỀ (BACK)
-        self.rect_back = pygame.Rect(200, 440, 201, 50)
+        self.rect_back = pygame.Rect(0, 0, 201, 50)
+        # Nút play
+        self.rect_play = pygame.Rect(400,0,200,50)
 
     def handle_event(self, event):
         # Lắng nghe sự kiện cho Input box và Slider
@@ -140,14 +142,15 @@ class SettingsScreen:
                 self.game_mode = "PVE"
 
             # Click nút TRỞ VỀ -> Trả về dictionary cấu hình và chuyển màn hình
-            elif self.rect_back.collidepoint(event.pos):
+            elif self.rect_play.collidepoint(event.pos):
                 config_data = {
                     "username": self.input_username.text,
                     "volume": self.volume_slider.value,
                     "mode": self.game_mode
                 }
+                return "GAME"
+            elif self.rect_back.collidepoint(event.pos):
                 return "START"
-
         return None
 
     def update(self):
@@ -192,8 +195,16 @@ class SettingsScreen:
         mouse_pos = pygame.mouse.get_pos()
         back_color = (39, 174, 96) if self.rect_back.collidepoint(mouse_pos) else (46, 204, 113)
         pygame.draw.rect(surface, back_color, self.rect_back, border_radius=10)
-        txt_back = self.label_font.render("LƯU & TRỞ VỀ", True, (255, 255, 255))
+        txt_back = self.label_font.render("BACK", True, (255, 255, 255))
         surface.blit(txt_back, txt_back.get_rect(center=self.rect_back.center))
+
+        # Nút Play
+        mouse_pos = pygame.mouse.get_pos()
+        play_color = (204, 153, 0) if self.rect_play.collidepoint(mouse_pos) else (204, 204, 0)
+        pygame.draw.rect(surface,play_color,self.rect_play,border_radius=10)
+        txt_play = self.label_font.render("PLAY",True, (255,255,255))
+        surface.blit(txt_play,txt_play.get_rect(center=self.rect_play.center))
+
 
 
 # =======================================================
