@@ -13,7 +13,7 @@ class StartScreen:
 
     # Kiểm tra xem con trỏ chuột click vào ô play hay quit
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if (self.play_rect.collidepoint(event.pos)): return "SETTING"
             if (self.quit_rect.collidepoint(event.pos)): return "QUIT"
         return "START"
@@ -46,7 +46,7 @@ class StartScreen:
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
-    pygame.display.set_caption("Caro Game - Start Screen Simple")
+    pygame.display.set_caption("Caro Game")
     clock = pygame.time.Clock()
 
     start_page = StartScreen()
