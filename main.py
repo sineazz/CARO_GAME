@@ -39,8 +39,11 @@ class PlayScreen:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == pygame.BUTTON_LEFT: # click chuột trái để chọn tọa độ nước đi tiếp theo
                 [x , y] = event.pos
-                pos[0] = x // NUM_COL_CELL
-                pos[1] = y // NUM_ROW_CELL
+                x = x // NUM_COL_CELL
+                y = y // NUM_ROW_CELL
+                if Valid(x , y , mark):
+                    pos[0] = x
+                    pos[1] = y
             elif event.button == pygame.BUTTON_RIGHT: # click chuột phải để hủy chọn tọa độ nước đi tiếp theo
                 pos[0] = -1
                 pos[1] = -1
