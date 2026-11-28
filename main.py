@@ -8,7 +8,7 @@ WHITE = (255 , 255 , 255)
 RED = (255 , 0 , 0)
 BLUE = (0 , 0 , 255)
 
-# kích thước
+# kích thướ
 NUM_ROW = 20 # số lượng hàng trong bảng
 NUM_COL = 20 # số lượng cột trong bảng
 NUM_ROW_CELL = 30 # số lượng hàng mỗi ô (pixel)
