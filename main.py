@@ -8,7 +8,7 @@ WHITE = (255 , 255 , 255)
 RED = (255 , 0 , 0)
 BLUE = (0 , 0 , 255)
 
-# kích thướ
+# kích thước
 NUM_ROW = 20 # số lượng hàng trong bảng
 NUM_COL = 20 # số lượng cột trong bảng
 NUM_ROW_CELL = 30 # số lượng hàng mỗi ô (pixel)
@@ -94,7 +94,7 @@ class PlayScreen:
         if Inside(pos[0] , pos[1]):
             pygame.draw.rect(screen , WHITE , (pos[0] * NUM_COL_CELL + 1 , pos[1] * NUM_ROW_CELL + 1 , 29 , 29))
 
-    def Win(self , grid):
+    def Win(self , grid , mark):
         
         # check 5 ô liên tiếp trên hàng
         for i in range(NUM_ROW):
@@ -157,16 +157,15 @@ class PlayScreen:
         return "ToBeContinue"
     
     def WhoIsWinner(self , mark):
-        RedIsWinner = self.Win(mark[0])
-        BlueIsWinner = self.Win(mark[1])
+        RedIsWinner = self.Win(mark[0] , mark)
+        BlueIsWinner = self.Win(mark[1] , mark)
         if RedIsWinner == "Win":
             return "Red"
-        elif RedIsWinner == "Draw":
-            return "Draw"
         
         if BlueIsWinner == "Win":
             return "Blue"
-        elif RedIsWinner == "Draw":
+        
+        if RedIsWinner == "Draw" and BlueIsWinner == "Draw":
             return "Draw"
         
         return "ToBeContinue"
